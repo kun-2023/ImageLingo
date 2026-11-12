@@ -1,0 +1,12 @@
+openai
+pydantic
+pydantic-settings
+Pillow
+fastapi
+uvicorn
+python-multipart
+reportlab
+streamlit
+httpx
+opencv-python-headless
+pytest

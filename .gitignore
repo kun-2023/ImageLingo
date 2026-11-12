@@ -1,0 +1,10 @@
+# Local secrets
+.env
+
+# Virtual environment
+lingo_venv/
+
+# Python and pytest caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
