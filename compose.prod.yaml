@@ -11,12 +11,12 @@ services:
       IMAGE_LINGO_API_URL: "http://backend:8000"
     depends_on:
       - backend
-    restart: unless-stopped`
+    restart: unless-stopped
 
   caddy:
     image: caddy:2
     environment:
-      IMAGE_LINGO_DOMAIN: "${IMAGE_LINGO_DOMAIN:?Ser IMAGE_LINGO_DOMAIN in .env}"
+      IMAGE_LINGO_DOMAIN: "${IMAGE_LINGO_DOMAIN:?Set IMAGE_LINGO_DOMAIN in .env}"
     ports:
       - "80:80"
       - "443:443"
@@ -28,6 +28,6 @@ services:
       - frontend
     restart: unless-stopped
 
-volumns:
+volumes:
   caddy_data:
   caddy_config:
