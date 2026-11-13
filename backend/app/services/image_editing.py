@@ -25,9 +25,14 @@ def edit_image(
     
     prompt = (
     f"Translate the visible text into {language_for_prompt} and place it "
-    "where the original text appears. Reduce shadows and improve text "
-    "readability where possible. Preserve the layout, names, numbers, "
-    "dates, logos, lines, and checkboxes. Leave illegible text as-is."
+    "where the original text appears. Translate every heading, paragraph,"
+    "and caption in reading order. Preserve the meaning of each sentence "
+    "and translate idioms naturally. Do not summarize or substitute a "
+    "familiar title for the original. Keep names, dates, and numbers accurate. "
+    "Adjust line breaks or reduce font size as needed so the full translation "
+    "fits. Preserve the layout, logos, borders, and checkboxes. Remove shadows, "
+    "improve lightings, and enhance texts readabilities if texts are blurred or difficult "
+    "to recognize wherever it's possible and leave illegible text as-is."
 )
 
     api_key=settings.openai_api_key.get_secret_value().strip()

@@ -2,6 +2,9 @@
 #### Description
 <p>ImageLingo is an app that translates texts of an image uploaded from one language to one of the targeted languages -English, French, or Mandarine. This app also keeps the originality of the image while improving lightings, removing shadows and enhancing readabilities of texts. The model powered this app is <b>gpt-image-2</b>. </p>
 
+#### ImageLingo URL
+<b>http://16.52.221.222</b>
+
 #### Tech Stack
 <ul>
 <li>Python</li>
