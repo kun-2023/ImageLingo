@@ -15,7 +15,9 @@ st.write("""
         recognizable to the user. While doing so, the app will keep the image original.
         It will preserve the style, color, logo, names of the original image.It's an 
         app can help you understand posters, forms and travelling documents in different 
-        languages instantaneously. 
+        languages instantaneously. The app only accepts JPEG, PNG, or WebP image type. The
+        processing time is between 30s and 60s approximately. Click the download button at
+        the very bottom to download the successfully translated image.
 """)
 
 with st.form("translate_form"):
@@ -41,7 +43,7 @@ if submitted:
                 )
                 response.raise_for_status()
         except httpx.TimeoutException:
-            st.error("Image Translation took more than 3 minutes. Try again with different photo.")
+            st.error("Image Translation took more than 3 minutes. Try again with a different photo.")
         except httpx.HTTPStatusError as exc:
             st.error(f"Translation failed (HTTP {exc.response.status_code}.)")
         except httpx.RequestError:
@@ -57,12 +59,16 @@ if "translation_result" in st.session_state:
     original, translated, language=st.session_state["translation_result"]
     left, right=st.columns(2)
 
-    left.image(original, caption="Original")
-    right.image(translated, caption=f"Translated to {language}")
+    left.caption("Original")
+    left.image(original)
+
+    right.caption(f"Translated to {language}")
+    right.image(translated)
     right.download_button(
         "Download PNG",
         data=translated,
         file_name=f"translated_{language.lower()}.png",
-        mime="image/png"
+        mime="image/png",
+        type="primary"
     )
 

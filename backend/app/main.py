@@ -12,6 +12,7 @@ SUPPORTED_IMAGE_TYPES={"image/jpeg", "image/png", "image/webp"}
 @app.get("/health")
 def health()->dict[str, str]:
     return {"status": "ok"}
+
 @app.post(
     "/translate",
     response_class=Response,

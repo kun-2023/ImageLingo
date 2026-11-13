@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    environment:
+      IMAGE_LINGO_API_URL: "http://backend:8000"
+    depends_on:
+      - backend
+    restart: unless-stopped`
+
+  caddy:
+    image: caddy:2
+    environment:
+      IMAGE_LINGO_DOMAIN: "${IMAGE_LINGO_DOMAIN:?Ser IMAGE_LINGO_DOMAIN in .env}"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumns:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config: /config
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+volumns:
+  caddy_data:
+  caddy_config:
