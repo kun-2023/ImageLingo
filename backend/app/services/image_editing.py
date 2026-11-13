@@ -13,12 +13,18 @@ load_dotenv(file, override=True)
 def edit_image(
         image_bytes: bytes,
         filename: str,
-        target_language: Literal["English", "French"],
+        target_language: Literal["English", "French", "Mandarin"],
         settings: Settings
 )->bytes:
+
+    language_for_prompt=(
+        "Mandaine Chinese (Simplified Chinese characters)"
+        if target_language=="Mandarin"
+        else target_language
+    )
     
     prompt = (
-    f"Translate the visible text into {target_language} and place it "
+    f"Translate the visible text into {language_for_prompt} and place it "
     "where the original text appears. Reduce shadows and improve text "
     "readability where possible. Preserve the layout, names, numbers, "
     "dates, logos, lines, and checkboxes. Leave illegible text as-is."

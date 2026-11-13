@@ -19,7 +19,7 @@ def health()->dict[str, str]:
 )
 def translate(
     image: UploadFile=File(...),
-    target_language: Literal["English", "French"]=Form(...),
+    target_language: Literal["English", "French", "Mandarin"]=Form(...),
 )->Response:
     if image.content_type not in SUPPORTED_IMAGE_TYPES:
         raise HTTPException(
