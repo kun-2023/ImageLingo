@@ -1,0 +1,61 @@
+name: ImageLingo CI_CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]  
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v6
+
+      - name: Create placeholder environment file
+        run: |
+          cat > .env <<'EOF'
+          OPENAI_API_KEY=ci-placeholder
+          OPENAI_MODEL=gpt-image-2
+          IMAGE_LINGO_DOMAIN=http://127.0.0.1
+          EOF
+
+      - name: Validate Compose files
+        run: |
+          docker compose -f compose.yaml config --quiet
+          docker compose -f compose.prod.yaml config --quiet
+
+      - name: Buil backend and frontend
+        run: docker compose -f compose.prod.yaml build backend frontend
+
+  deploy:
+    needs: docker-build
+    if: github.event_name=='push' && github.ref=='refs/heads/main'        
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Lightsail
+        env:
+          LIGHTSAIL_HOST: ${{vars.LIGHTSAIL_HOST}}
+          LIGHTSAIL_SSH_KEY: ${{secrets.LIGHTSAIL_SSH_KEY}}
+          LIGHTSAIL_KNOWN_HOSTS: ${{secrets.LIGHTSAIL_KNOWN_HOSTS}}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$LIGHTSAIL_SSH_KEY">~/.ssh/lightsail
+          printf '%s\n' "$LIGHTSAIL_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/lightsail
+
+          ssh -i ~/.ssh/lightsail \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "ubuntu@$LIGHTSAIL_HOST" \
+            "cd ~/image-lingo &&
+            git pull --ff-only origin main &&
+            test \"\$(git rev-parse HEAD)\" = '$GITHUB_SHA' &&
+            sudo -n docker compose -f compose.prod.yaml up -d --build &&
+            sudo -n docker compose -f compose.prod.yaml ps"
