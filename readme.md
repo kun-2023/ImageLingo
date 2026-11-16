@@ -12,7 +12,9 @@
 <li>OpenAI API</li>
 <li>Streamlit</li>
 <li>AWS LightSail</li>
-<li>Git/GitHub</li>
+<li>Git/GitHub/Github Actions</li>
+<li>Caddy</li>
+<li>Docker Compose</li>
 </ul>
 
 #### How to run the app locally
@@ -23,10 +25,16 @@ cd ~/desktop
 git clone https://github.com/kun-2023/ImageLingo.git
 # 3. Navigate to ImageLingo folder
 cd ImageLingo
-# 4. replace your own OPENAI_API_KEY in .env.example file
+# 4. Create .env file
 cp .env.example .env
+# then replace your own OPENAI_API_KEY in .env file
 # 5. build docker image_lingo
 docker compose up --build
 # 6. click http://localhost:8501
 # And Enjoy!!!
 ```
+
+#### Demo Images
+|Demo 1|Demo 2|Demo3|
+|:---:|:---:|:---:|
+|![Signd from French to English](<Screenshot 2026-11-16 104425.png>)|![Recepie from English to Mandarin](<Screenshot 2026-11-16 104600.png>)|![Mural from French to English](the_mural.png)|
